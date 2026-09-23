@@ -144,7 +144,7 @@ export function ResultsPanel({ state, onRetry }: { state: ResultState; onRetry: 
             {n} {plural(n, "подходящий подрядчик", "подходящих подрядчика", "подходящих подрядчиков")}
           </span>
           <span className="opacity-70"> · из {response.total_candidates} в категории</span>
-          {n < 3 && response.message && <p className="mt-1 opacity-80">{response.message}</p>}
+          {response.message && <p className="mt-1 opacity-80">{response.message}</p>}
         </div>
       </div>
       {response.results.map((c, i) => (
