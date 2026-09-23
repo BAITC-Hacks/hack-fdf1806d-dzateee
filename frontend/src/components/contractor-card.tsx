@@ -13,7 +13,7 @@ export function ContractorCard({ contractor, rank }: { contractor: Contractor; r
         <div className="min-w-0 flex-1">
           <h3 className="truncate font-semibold leading-tight">{contractor.name}</h3>
           <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-            <Badge variant="secondary" className="capitalize">
+            <Badge variant="secondary">
               {contractor.category}
             </Badge>
             <span className="inline-flex items-center gap-1">

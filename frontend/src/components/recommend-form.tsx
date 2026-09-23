@@ -96,7 +96,7 @@ export function RecommendForm({
       <Field label="Тип мероприятия" htmlFor="event_type">
         <select
           id="event_type"
-          className={cn(selectClass, "capitalize")}
+          className={selectClass}
           value={eventType}
           onChange={(e) => setEventType(e.target.value)}
         >
