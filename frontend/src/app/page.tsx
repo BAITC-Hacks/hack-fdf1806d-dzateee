@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { PartyPopper } from "lucide-react";
 import { RecommendForm } from "@/components/recommend-form";
 import { ResultsPanel, type ResultState } from "@/components/results-panel";
-import { USE_MOCKS } from "@/lib/api";
+import { ApiError, USE_MOCKS } from "@/lib/api";
 import type { MockMode } from "@/lib/mocks";
 import { recommend } from "@/lib/recommend";
 import type { RecommendRequest } from "@/lib/types";
@@ -32,13 +32,7 @@ export default function Home() {
       if (id === requestId.current) setState({ kind: "done", request: req, response });
     } catch (e) {
       if (id !== requestId.current) return;
-      const message =
-        e instanceof DOMException && e.name === "TimeoutError"
-          ? "Сервер не ответил за 15 секунд. Попробуйте ещё раз."
-          : e instanceof Error
-            ? e.message
-            : "Неизвестная ошибка";
-      setState({ kind: "error", message });
+      setState({ kind: "error", message: describeError(e) });
     }
   }
 
@@ -93,4 +87,20 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+function describeError(e: unknown): string {
+  if (e instanceof DOMException && e.name === "TimeoutError")
+    return "Сервер не ответил за 15 секунд. Попробуйте ещё раз.";
+  if (e instanceof ApiError) {
+    if (e.status >= 500) return `Бэкенд недоступен или упал (HTTP ${e.status}). Проверьте, что он запущен на :8000.`;
+    try {
+      const detail = JSON.parse(e.message).detail;
+      return `Сервер отклонил запрос (HTTP ${e.status}): ${typeof detail === "string" ? detail : JSON.stringify(detail)}`;
+    } catch {
+      return `Сервер отклонил запрос (HTTP ${e.status}): ${e.message}`;
+    }
+  }
+  if (e instanceof TypeError) return "Нет связи с сервером. Проверьте подключение.";
+  return e instanceof Error ? e.message : "Неизвестная ошибка";
 }

@@ -50,10 +50,10 @@ export function RecommendForm({
   onSubmit: (req: RecommendRequest) => void;
 }) {
   const [city, setCity] = useState<string>(CITIES[0]);
-  const [eventDate, setEventDate] = useState(isoDate(30));
-  const [eventType, setEventType] = useState<string>("той");
-  const [category, setCategory] = useState("ведущий");
-  const [budget, setBudget] = useState("300000");
+  const [eventDate, setEventDate] = useState(isoDate(45));
+  const [eventType, setEventType] = useState<string>("свадьба");
+  const [category, setCategory] = useState<string>(CATEGORIES[0]);
+  const [budget, setBudget] = useState("1000000");
   const [duration, setDuration] = useState("");
   const [language, setLanguage] = useState("");
 
@@ -109,20 +109,11 @@ export function RecommendForm({
       </Field>
 
       <Field label="Категория подрядчика" htmlFor="category">
-        <Input
-          id="category"
-          list="category-options"
-          required
-          className="h-9"
-          placeholder="ведущий, фотограф, кейтеринг…"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
-        <datalist id="category-options">
+        <select id="category" className={selectClass} value={category} onChange={(e) => setCategory(e.target.value)}>
           {CATEGORIES.map((c) => (
-            <option key={c} value={c} />
+            <option key={c}>{c}</option>
           ))}
-        </datalist>
+        </select>
       </Field>
 
       <Field label="Бюджет, ₸" htmlFor="budget">

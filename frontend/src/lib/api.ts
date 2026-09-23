@@ -1,7 +1,7 @@
 // API client. Switches between mock data and the real backend.
-// NEXT_PUBLIC_USE_MOCKS=false turns mocks off (requests go to the backend through the /api/* proxy).
+// Requests go to the backend through the /api/* proxy. NEXT_PUBLIC_USE_MOCKS=true switches to mock data.
 
-export const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
+export const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS === "true";
 
 const BASE = "/api";
 const TIMEOUT_MS = 15000; // the brief allows up to 10 s per response, plus some headroom

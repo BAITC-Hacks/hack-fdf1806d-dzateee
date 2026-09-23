@@ -13,7 +13,7 @@ export type RecommendRequest = {
 export type RecommendStatus = "ok" | "no_category" | "no_match";
 
 export type Contractor = {
-  id: string;
+  id: string | number;
   name: string;
   category: string;
   city: string;

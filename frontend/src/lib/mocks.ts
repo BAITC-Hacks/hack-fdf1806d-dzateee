@@ -19,17 +19,17 @@ type MockProfile = {
 };
 
 const PROFILES: MockProfile[] = [
-  { id: "c-001", name: "Ведущий Арман", category: "ведущий", city: "Алматы", price_from_kzt: 250000, event_formats: ["свадьба", "той", "юбилей"], languages: ["казахский", "русский"], max_hours: 6, busy_dates: ["2026-10-10"], pitch: "двуязычные тои с интерактивом для гостей всех возрастов" },
-  { id: "c-002", name: "Ведущая Динара", category: "ведущий", city: "Алматы", price_from_kzt: 180000, event_formats: ["корпоратив", "конференция", "день рождения"], languages: ["русский", "английский"], max_hours: null, busy_dates: [], pitch: "деловые мероприятия и корпоративы для международных команд" },
-  { id: "c-003", name: "Ведущий Ерлан", category: "ведущий", city: "Алматы", price_from_kzt: 400000, event_formats: ["свадьба", "той", "корпоратив"], languages: ["казахский", "русский"], max_hours: 8, busy_dates: [], pitch: "премиальные свадьбы и тои с живым вокалом" },
-  { id: "c-004", name: "Ведущая Айгерим", category: "ведущий", city: "Алматы", price_from_kzt: 120000, event_formats: ["день рождения", "юбилей", "той"], languages: ["казахский"], max_hours: 4, busy_dates: [], pitch: "камерные семейные праздники на казахском языке" },
-  { id: "c-005", name: "Фотограф Тимур", category: "фотограф", city: "Алматы", price_from_kzt: 150000, event_formats: ["свадьба", "той", "день рождения"], languages: ["русский"], max_hours: 10, busy_dates: [], pitch: "репортажная съёмка без постановки, 300+ фото в день" },
-  { id: "c-006", name: "Фотограф Жанель", category: "фотограф", city: "Алматы", price_from_kzt: 220000, event_formats: ["свадьба", "корпоратив", "конференция"], languages: ["русский", "английский"], max_hours: null, busy_dates: [], pitch: "fashion-съёмка и деловой репортаж" },
-  { id: "c-007", name: "Фотограф Ильяс", category: "фотограф", city: "Астана", price_from_kzt: 130000, event_formats: ["свадьба", "той", "юбилей"], languages: ["казахский", "русский"], max_hours: 8, busy_dates: [], pitch: "тёплые семейные кадры и съёмка обрядов" },
-  { id: "c-008", name: "Ведущий Нурлан", category: "ведущий", city: "Астана", price_from_kzt: 200000, event_formats: ["той", "свадьба", "юбилей"], languages: ["казахский", "русский"], max_hours: 6, busy_dates: [], pitch: "классические тои с традициями и современной программой" },
-  { id: "c-009", name: "Кейтеринг Dastarkhan", category: "кейтеринг", city: "Астана", price_from_kzt: 900000, event_formats: ["корпоратив", "конференция", "свадьба"], languages: ["русский", "казахский"], max_hours: null, busy_dates: [], pitch: "национальная и европейская кухня на 50–500 гостей" },
-  { id: "c-010", name: "Декор Ak Saray", category: "декор", city: "Алматы", price_from_kzt: 350000, event_formats: ["свадьба", "той"], languages: ["русский", "казахский"], max_hours: null, busy_dates: [], pitch: "оформление залов в этно- и минималистичном стиле" },
-  { id: "c-011", name: "Event-ведущий Alex", category: "ведущий", city: "Зарубежье", price_from_kzt: 600000, event_formats: ["корпоратив", "конференция"], languages: ["английский", "русский"], max_hours: 8, busy_dates: [], pitch: "международные конференции и выездные корпоративы" },
+  { id: "c-001", name: "Ведущий Арман", category: "Ведущий", city: "Алматы", price_from_kzt: 250000, event_formats: ["свадьба", "той", "юбилей"], languages: ["казахский", "русский"], max_hours: 6, busy_dates: ["2026-10-10"], pitch: "двуязычные тои с интерактивом для гостей всех возрастов" },
+  { id: "c-002", name: "Ведущая Динара", category: "Ведущий", city: "Алматы", price_from_kzt: 180000, event_formats: ["корпоратив", "конференция", "день рождения"], languages: ["русский", "английский"], max_hours: null, busy_dates: [], pitch: "деловые мероприятия и корпоративы для международных команд" },
+  { id: "c-003", name: "Ведущий Ерлан", category: "Ведущий", city: "Алматы", price_from_kzt: 400000, event_formats: ["свадьба", "той", "корпоратив"], languages: ["казахский", "русский"], max_hours: 8, busy_dates: [], pitch: "премиальные свадьбы и тои с живым вокалом" },
+  { id: "c-004", name: "Ведущая Айгерим", category: "Ведущий", city: "Алматы", price_from_kzt: 120000, event_formats: ["день рождения", "юбилей", "той"], languages: ["казахский"], max_hours: 4, busy_dates: [], pitch: "камерные семейные праздники на казахском языке" },
+  { id: "c-005", name: "Фотограф Тимур", category: "Фотограф", city: "Алматы", price_from_kzt: 150000, event_formats: ["свадьба", "той", "день рождения"], languages: ["русский"], max_hours: 10, busy_dates: [], pitch: "репортажная съёмка без постановки, 300+ фото в день" },
+  { id: "c-006", name: "Фотограф Жанель", category: "Фотограф", city: "Алматы", price_from_kzt: 220000, event_formats: ["свадьба", "корпоратив", "конференция"], languages: ["русский", "английский"], max_hours: null, busy_dates: [], pitch: "fashion-съёмка и деловой репортаж" },
+  { id: "c-007", name: "Фотограф Ильяс", category: "Фотограф", city: "Астана", price_from_kzt: 130000, event_formats: ["свадьба", "той", "юбилей"], languages: ["казахский", "русский"], max_hours: 8, busy_dates: [], pitch: "тёплые семейные кадры и съёмка обрядов" },
+  { id: "c-008", name: "Ведущий Нурлан", category: "Ведущий", city: "Астана", price_from_kzt: 200000, event_formats: ["той", "свадьба", "юбилей"], languages: ["казахский", "русский"], max_hours: 6, busy_dates: [], pitch: "классические тои с традициями и современной программой" },
+  { id: "c-009", name: "Кейтеринг Dastarkhan", category: "Ресторан", city: "Астана", price_from_kzt: 900000, event_formats: ["корпоратив", "конференция", "свадьба"], languages: ["русский", "казахский"], max_hours: null, busy_dates: [], pitch: "национальная и европейская кухня на 50–500 гостей" },
+  { id: "c-010", name: "Декор Ak Saray", category: "Декоратор", city: "Алматы", price_from_kzt: 350000, event_formats: ["свадьба", "той"], languages: ["русский", "казахский"], max_hours: null, busy_dates: [], pitch: "оформление залов в этно- и минималистичном стиле" },
+  { id: "c-011", name: "Event-ведущий Alex", category: "Ведущий", city: "Зарубежье", price_from_kzt: 600000, event_formats: ["корпоратив", "конференция"], languages: ["английский", "русский"], max_hours: 8, busy_dates: [], pitch: "международные конференции и выездные корпоративы" },
 ];
 
 function explain(p: MockProfile, req: RecommendRequest): string {
@@ -117,20 +117,20 @@ const CANNED: Record<Exclude<MockMode, "auto">, RecommendResponse> = {
     message: "Нашли 3 подходящих подрядчиков.",
     total_candidates: 7,
     results: [
-      { id: "c-002", name: "Ведущая Динара", category: "ведущий", city: "Алматы", price_from_kzt: 180000, explanation: "Цена от 180 000 ₸ — на 120 000 ₸ ниже бюджета, ведёт корпоративы на русском и английском, без ограничения по часам." },
-      { id: "c-001", name: "Ведущий Арман", category: "ведущий", city: "Алматы", price_from_kzt: 250000, explanation: "Укладывается в бюджет с запасом 50 000 ₸, специализируется на двуязычных тоях — совпадает с форматом «той» и казахским языком." },
-      { id: "c-003", name: "Ведущий Ерлан", category: "ведущий", city: "Алматы", price_from_kzt: 290000, explanation: "Ровно в пределах бюджета, работает до 8 часов (вам нужно 6), в описании — тои с живым вокалом." },
+      { id: "c-002", name: "Ведущая Динара", category: "Ведущий", city: "Алматы", price_from_kzt: 180000, explanation: "Цена от 180 000 ₸ — на 120 000 ₸ ниже бюджета, ведёт корпоративы на русском и английском, без ограничения по часам." },
+      { id: "c-001", name: "Ведущий Арман", category: "Ведущий", city: "Алматы", price_from_kzt: 250000, explanation: "Укладывается в бюджет с запасом 50 000 ₸, специализируется на двуязычных тоях — совпадает с форматом «той» и казахским языком." },
+      { id: "c-003", name: "Ведущий Ерлан", category: "Ведущий", city: "Алматы", price_from_kzt: 290000, explanation: "Ровно в пределах бюджета, работает до 8 часов (вам нужно 6), в описании — тои с живым вокалом." },
     ],
   },
   no_category: {
     status: "no_category",
-    message: "В городе Зарубежье нет подрядчиков категории «кейтеринг».",
+    message: "В городе Астана нет подрядчиков категории «Ресторан».",
     total_candidates: 0,
     results: [],
   },
   no_match: {
     status: "no_match",
-    message: "В категории «ведущий» в городе Алматы есть 4 подрядчика, но никто не подошёл: 1 — занят на эту дату; 2 — дороже вашего бюджета; 1 — не ведёт на выбранном языке.",
+    message: "В категории «Ведущий» в городе Алматы есть 4 подрядчика, но никто не подошёл: 1 — занят на эту дату; 2 — дороже вашего бюджета; 1 — не ведёт на выбранном языке.",
     total_candidates: 4,
     results: [],
   },
