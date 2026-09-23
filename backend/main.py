@@ -13,7 +13,7 @@ import threading
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Literal
 
@@ -217,8 +217,32 @@ def rank_score(contractor: Contractor, request: RecommendRequest) -> float:
     return round(semantic_score + language_bonus, 12)
 
 
-def reasons_message(reasons: Counter[str]) -> str:
-    return "; ".join(f"{reason} — {count}" for reason, count in reasons.items())
+def reasons_message(
+    reasons: Counter[str], contractors: list[Contractor], event_date: date
+) -> str:
+    busy_reason = "заняты на выбранную дату"
+    nearest_free: date | None = None
+    last_dataset_date = date(2026, 12, 31)
+    if reasons[busy_reason] and event_date < last_dataset_date:
+        for contractor in contractors:
+            if event_date not in contractor.busy_dates:
+                continue
+            busy_dates = set(contractor.busy_dates)
+            free_date = event_date + timedelta(days=1)
+            while free_date <= last_dataset_date and free_date in busy_dates:
+                free_date += timedelta(days=1)
+            if free_date <= last_dataset_date and (
+                nearest_free is None or free_date < nearest_free
+            ):
+                nearest_free = free_date
+
+    parts = []
+    for reason, count in reasons.items():
+        part = f"{reason} — {count}"
+        if reason == busy_reason and nearest_free is not None:
+            part += f" (например, один свободен уже {nearest_free.isoformat()})"
+        parts.append(part)
+    return "; ".join(parts)
 
 
 def request_fingerprint(request: RecommendRequest) -> str:
@@ -396,7 +420,7 @@ def recommend(request: RecommendRequest) -> RecommendResponse:
             status="no_match",
             message=(
                 f"В городе {request.city} есть {total_candidates} подрядчиков категории "
-                f"{request.category}, но никто не прошёл фильтры: {reasons_message(reasons)}."
+                f"{request.category}, но никто не прошёл фильтры: {reasons_message(reasons, candidates, request.event_date)}."
             ),
             total_candidates=total_candidates,
             results=[],
@@ -427,7 +451,7 @@ def recommend(request: RecommendRequest) -> RecommendResponse:
         f"{request.category} в городе {request.city}."
     )
     if reasons:
-        message += f" Остальные не прошли фильтры: {reasons_message(reasons)}."
+        message += f" Остальные не прошли фильтры: {reasons_message(reasons, candidates, request.event_date)}."
     return RecommendResponse(
         status="ok",
         message=message,
