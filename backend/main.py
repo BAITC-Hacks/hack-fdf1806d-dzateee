@@ -240,7 +240,10 @@ def reasons_message(
     for reason, count in reasons.items():
         part = f"{reason} — {count}"
         if reason == busy_reason and nearest_free is not None:
-            part += f" (например, один свободен уже {nearest_free.isoformat()})"
+            part += (
+                f" (ближайшая свободная дата в календаре — {nearest_free.isoformat()},"
+                " не гарантирует совпадение по остальным критериям)"
+            )
         parts.append(part)
     return "; ".join(parts)
 
