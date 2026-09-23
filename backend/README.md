@@ -1,6 +1,108 @@
-# Backend
+# EventMatch KZ — backend
 
-Install dependencies with `python -m pip install -r requirements.txt`, then run
-`python -m uvicorn main:app --reload` from this directory.
+FastAPI-сервис выбирает до трёх event-подрядчиков из 66 профилей в
+`data/hackathon-dataset.csv`. Он сначала строго фильтрует профили, затем
+ранжирует подходящих и формирует объяснения для карточек.
 
-The API routes will be added against the frontend contract.
+## Установка и запуск
+
+Из корня репозитория в PowerShell:
+
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Файл `data/hackathon-dataset.csv` уже находится в этой папке. Для скоринга
+с embeddings и объяснений через OpenAI укажите ключ в `backend/.env`:
+
+```dotenv
+OPENAI_API_KEY=ваш_ключ
+```
+
+Без ключа API всё равно запускается: фильтрация и числовой скор работают,
+а `explanation` содержит `заглушка`. С ключом сервер при старте одним
+пакетным запросом получает embeddings для всех описаний и допустимых пар
+«категория + формат»; результаты хранятся в памяти. Для топ-3 сервис вызывает
+`gpt-4o-mini` с `temperature=0` и кэширует объяснения по подрядчику и
+параметрам запроса. Используется `text-embedding-3-small`.
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Документация API: `http://127.0.0.1:8000/docs`.
+
+## API
+
+`POST /api/recommend` принимает JSON:
+
+```json
+{
+  "city": "Алматы",
+  "event_date": "2027-01-01",
+  "event_type": "той",
+  "category": "Ведущий",
+  "budget_kzt": 1000000,
+  "duration_hours": 4,
+  "language": "русский"
+}
+```
+
+`duration_hours` и `language` могут быть `null`. Ответ содержит `status`
+(`ok`, `no_category` или `no_match`), `message`, `total_candidates` и
+`results`. Карточка результата содержит `id`, `name`, `category`, `city`,
+`price_from_kzt`, `explanation`. `total_candidates` — число профилей в городе
+и категории до остальных фильтров.
+
+Фильтрация идёт в два этапа:
+
+1. Город совпадает, а категория входит в список `categories` профиля.
+   Если список пуст, возвращается `no_category`.
+2. Формат входит в `event_formats`, цена не превышает бюджет, дата отсутствует
+   в `busy_dates`, язык (если задан) входит в `languages`, а `max_hours`
+   (если задана длительность) пуст или не меньше длительности заказа.
+   Если список пуст, возвращается `no_match` с причинами отказа.
+
+Для прошедших фильтры профилей отбор тройки идёт по косинусной близости
+embeddings описания и запроса плюс бонус `0.10` за точное совпадение заданного
+языка. При равном скоре используется `id`. Цена участвует только в жёстком
+фильтре бюджета. После отбора тройка сортируется для показа по возрастанию
+`price_from_kzt`, при равной цене — по `id`. Повторный идентичный запрос
+возвращает тот же порядок и берёт объяснения из памяти без повторного вызова
+chat API.
+
+## Проверка
+
+```powershell
+$body = @{
+    city = "Алматы"
+    event_date = "2027-01-01"
+    event_type = "той"
+    category = "Ведущий"
+    budget_kzt = 1000000
+    duration_hours = 4
+    language = "русский"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://127.0.0.1:8000/api/recommend" `
+    -Method Post -ContentType "application/json; charset=utf-8" -Body $body
+```
+
+Повторите запрос: порядок карточек и тексты объяснений должны совпасть.
+Категория, которой нет в городе, даёт `no_category`; слишком маленький бюджет
+для существующей категории даёт `no_match`.
+
+## Данные и ограничения
+
+CSV содержит 66 анонимизированных профилей. Поля `categories`,
+`event_formats`, `languages`, `busy_dates` — списки внутри ячейки; в этом
+файле элементы разделены `|`, загрузчик также принимает запятую. Пустой
+`max_hours` означает отсутствие указанного ограничения по часам.
+
+Профили и embeddings кэшируются только в памяти процесса. После изменения
+CSV или перезапуска сервера embeddings будут вычислены заново. Без ключа
+OpenAI семантическая часть скора недоступна; при ошибке генерации объяснения
+сервис возвращает краткий текст из проверенных фактов. Бронирование и
+подтверждение доступности исполнителем не реализованы.
