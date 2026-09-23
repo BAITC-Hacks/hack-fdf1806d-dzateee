@@ -1,9 +1,10 @@
 // API client. Switches between mock data and the real backend.
-// NEXT_PUBLIC_USE_MOCKS=false turns mocks off (requests go to the backend through /api/backend/*).
+// NEXT_PUBLIC_USE_MOCKS=false turns mocks off (requests go to the backend through the /api/* proxy).
 
 export const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
-const BASE = "/api/backend";
+const BASE = "/api";
+const TIMEOUT_MS = 15000; // the brief allows up to 10 s per response, plus some headroom
 
 export class ApiError extends Error {
   constructor(
@@ -23,12 +24,13 @@ export async function request<T>(
   mock?: () => T | Promise<T>,
 ): Promise<T> {
   if (USE_MOCKS && mock) {
-    await new Promise((r) => setTimeout(r, 400)); // imitate network latency
+    await new Promise((r) => setTimeout(r, 1200)); // imitate network latency
     return mock();
   }
 
   const res = await fetch(`${BASE}${path}`, {
     method,
+    signal: AbortSignal.timeout(TIMEOUT_MS),
     headers: body instanceof FormData ? undefined : { "Content-Type": "application/json" },
     body: body === undefined ? undefined : body instanceof FormData ? body : JSON.stringify(body),
   });
